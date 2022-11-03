@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  AnimatedStyleProp,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { mix, mixColor } from 'react-native-redash';
 import type { IChevronProps } from './types';
 
@@ -14,7 +17,7 @@ const Chevron = ({
   activeBackgroundIcon,
   inactiveBackgroundIcon,
 }: IChevronProps) => {
-  const style = useAnimatedStyle<Animated.AnimatedStyleProp<ViewStyle>>(() => ({
+  const style = useAnimatedStyle<AnimatedStyleProp<ViewStyle>>(() => ({
     // @ts-ignore
     backgroundColor: mixColor(
       progress.value,
@@ -48,9 +51,10 @@ const Chevron = ({
     return handleIcon !== undefined ? handleIcon(progress) : hasIcon;
   }, [handleIcon, hasIcon, progress]);
 
-  const containerAnimatedStyle = useMemo<
-    Animated.AnimatedStyleProp<ViewStyle>[]
-  >(() => [styles.container, style, styleChevron], [style, styleChevron]);
+  const containerAnimatedStyle = useMemo<AnimatedStyleProp<ViewStyle>[]>(
+    () => [styles.container, style, styleChevron],
+    [style, styleChevron]
+  );
 
   return (
     <Animated.View style={containerAnimatedStyle}>{renderIcon()}</Animated.View>
